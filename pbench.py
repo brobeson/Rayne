@@ -15,7 +15,7 @@ class Benchmark:
 
     def __init__(self, runs: int = 1000):
         self.subject: Optional[Callable] = None
-        self.__run_times: List[float] = []
+        self.__run_times: List[int] = []
         self.__runs = runs
 
     def __enter__(self):
@@ -50,7 +50,7 @@ class Benchmark:
     def __run_benchmark(self):
         self.__run_times = [0 for _ in range(0, self.__runs)]
         for i in range(0, self.__runs):
-            start_time = time.perf_counter()
+            start_time = time.perf_counter_ns()
             self.subject()  # pylint:disable=not-callable
-            end_time = time.perf_counter()
+            end_time = time.perf_counter_ns()
             self.__run_times[i] = end_time - start_time
