@@ -46,8 +46,8 @@ def start_recursive() -> int:
 
 with Benchmark() as benchmark:
     benchmark.subject = start_closed_form
-print("Closed Form:", benchmark.run_time)
+print("Closed Form:", benchmark.mean, "±", benchmark.standard_deviation)
 
 with Benchmark() as benchmark:
     benchmark.subject = start_recursive
-print("Recursive:  ", benchmark.run_time)
+print("Recursive:  ", benchmark.mean, "±", benchmark.standard_deviation)
