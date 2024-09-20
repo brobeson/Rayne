@@ -1,8 +1,8 @@
 """Provide micro benchmarking functionality"""
 
 import time
-from statistics import fmean, stdev
-from typing import List, Callable, Optional
+from statistics import mean, stdev
+from typing import List, Callable, Optional, Dict, Any
 
 
 class Benchmark:
@@ -14,7 +14,8 @@ class Benchmark:
     """
 
     def __init__(self, runs: int = 1000):
-        self.subject: Optional[Callable] = None
+        self.__user_function: Optional[Callable] = None
+        self.__user_function_args: Dict[str, Any]
         self.__run_times: List[int] = []
         self.__runs = runs
         self.__clock_latency = 0
@@ -23,11 +24,22 @@ class Benchmark:
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        if self.subject is None:
+        if self.__user_function is None:
             return False
         self.__measure_clock_latency()
         self.__run_benchmark()
         return True
+
+    def set_user_code(self, function, **kwargs):
+        """
+        Set the user code to benchmark.
+
+        Args:
+            function (Callable): The benchmark measures the execution time of this function.
+            kwargs: The benchmark passes these arguments to ``function``.
+        """
+        self.__user_function = function
+        self.__user_function_args = kwargs
 
     @property
     def mean(self) -> float:
@@ -37,7 +49,7 @@ class Benchmark:
         Returns:
             float: The mean of the measured run times.
         """
-        return fmean(self.__run_times)
+        return mean(self.__run_times)
 
     @property
     def standard_deviation(self) -> float:
@@ -69,6 +81,6 @@ class Benchmark:
         self.__run_times = [0 for _ in range(0, self.__runs)]
         for i in range(0, self.__runs):
             start_time = time.perf_counter_ns()
-            self.subject()  # pylint:disable=not-callable
+            self.__user_function(**self.__user_function_args)
             end_time = time.perf_counter_ns()
             self.__run_times[i] = max(end_time - start_time - self.__clock_latency, 0)
