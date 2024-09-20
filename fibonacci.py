@@ -36,18 +36,10 @@ def recursive(n: int) -> int:
     return recursive(n - 1) + recursive(n - 2)
 
 
-def start_closed_form() -> int:
-    return closed_form(10)
-
-
-def start_recursive() -> int:
-    return recursive(10)
-
-
 with Benchmark() as benchmark:
-    benchmark.subject = start_closed_form
+    benchmark.set_user_code(closed_form, n=5)
 print("Closed Form:", benchmark.mean, "±", benchmark.standard_deviation)
 
 with Benchmark() as benchmark:
-    benchmark.subject = start_recursive
+    benchmark.set_user_code(recursive, n=5)
 print("Recursive:  ", benchmark.mean, "±", benchmark.standard_deviation)
