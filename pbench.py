@@ -1,8 +1,14 @@
 """Provide micro benchmarking functionality"""
 
+from dataclasses import dataclass
 import time
-from statistics import mean, stdev
 from typing import List, Callable, Optional, Dict, Any
+
+
+@dataclass
+class BenchmarkResults:
+    name: str
+    run_times: List[int]
 
 
 class Benchmark:
@@ -13,11 +19,18 @@ class Benchmark:
         runs (int): Execute the test subject this many times. Each run is independently timed.
     """
 
-    def __init__(self, runs: int = 1000):
+    __next_benchmark_number = 1
+
+    def __init__(self, name: str = "", runs: int = 1000):
+        if name:
+            self.__name = name
+        else:
+            self.__name = f"Benchmark_{Benchmark.__next_benchmark_number}"
+            Benchmark.__next_benchmark_number += 1
+        self.__runs = runs
         self.__user_function: Optional[Callable] = None
         self.__user_function_args: Dict[str, Any]
         self.__run_times: List[int] = []
-        self.__runs = runs
         self.__clock_latency = 0
 
     def __enter__(self):
@@ -42,24 +55,8 @@ class Benchmark:
         self.__user_function_args = kwargs
 
     @property
-    def mean(self) -> float:
-        """
-        Get the mean run time for the test subject.
-
-        Returns:
-            float: The mean of the measured run times.
-        """
-        return mean(self.__run_times)
-
-    @property
-    def standard_deviation(self) -> float:
-        """
-        Get the standard deviation of the benchmark run times.
-
-        Returns:
-            float: The standard deviation of the benchmark run times.
-        """
-        return stdev(self.__run_times)
+    def results(self) -> BenchmarkResults:
+        return BenchmarkResults(self.__name, self.__run_times)
 
     def __measure_clock_latency(self):
         """
