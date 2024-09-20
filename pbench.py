@@ -1,29 +1,56 @@
 """Provide micro benchmarking functionality"""
 
 import time
+from statistics import fmean, stdev
+from typing import List, Callable, Optional
 
 
 class Benchmark:
+    """
+    Micro benchmark context manager
+
+    Args:
+        runs (int): Execute the test subject this many times. Each run is independently timed.
+    """
+
     def __init__(self, runs: int = 1000):
-        self.start_time = None
-        self.end_time = None
-        self.subject = None
+        self.subject: Optional[Callable] = None
+        self.__run_times: List[float] = []
         self.__runs = runs
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        if self.subject is not None:
-            self.__run_benchmark()
+        if self.subject is None:
+            return False
+        self.__run_benchmark()
         return True
 
     @property
-    def run_time(self):
-        return self.end_time - self.start_time
+    def mean(self) -> float:
+        """
+        Get the mean run time for the test subject.
+
+        Returns:
+            float: The mean of the measured run times.
+        """
+        return fmean(self.__run_times)
+
+    @property
+    def standard_deviation(self) -> float:
+        """
+        Get the standard deviation of the benchmark run times.
+
+        Returns:
+            float: The standard deviation of the benchmark run times.
+        """
+        return stdev(self.__run_times)
 
     def __run_benchmark(self):
-        self.start_time = time.perf_counter()
-        for _ in range(0, self.__runs):
-            self.subject()
-        self.end_time = time.perf_counter()
+        self.__run_times = [0 for _ in range(0, self.__runs)]
+        for i in range(0, self.__runs):
+            start_time = time.perf_counter()
+            self.subject()  # pylint:disable=not-callable
+            end_time = time.perf_counter()
+            self.__run_times[i] = end_time - start_time
