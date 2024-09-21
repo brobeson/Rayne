@@ -1,7 +1,6 @@
 """Example use of PBench"""
 
 from math import sqrt
-from statistics import mean, stdev
 from pbench import Benchmark
 
 
@@ -39,14 +38,6 @@ def recursive(n: int) -> int:
 
 with Benchmark() as benchmark:
     benchmark.set_user_code(closed_form, n=5)
-results = benchmark.results
-print(
-    results.name, int(mean(results.run_times)), int(stdev(results.run_times)), sep="  "
-)
 
-# BUG Why isn't this name Benchmark_2?
 with Benchmark() as benchmark:
     benchmark.set_user_code(recursive, n=5)
-print(
-    results.name, int(mean(results.run_times)), int(stdev(results.run_times)), sep="  "
-)

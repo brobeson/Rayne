@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 import time
+from statistics import mean, stdev
 from typing import List, Callable, Optional, Dict, Any
 
 
@@ -9,6 +10,16 @@ from typing import List, Callable, Optional, Dict, Any
 class BenchmarkResults:
     name: str
     run_times: List[int]
+
+
+class Reporter:
+    def report(self, result: BenchmarkResults):
+        print(
+            result.name,
+            int(mean(result.run_times)),
+            int(stdev(result.run_times)),
+            sep="  ",
+        )
 
 
 class Benchmark:
@@ -21,13 +32,22 @@ class Benchmark:
 
     __next_benchmark_number = 1
 
-    def __init__(self, name: str = "", runs: int = 1000):
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        runs: int = 1000,
+        reporter: Optional[Reporter] = None,
+    ):
         if name:
             self.__name = name
         else:
             self.__name = f"Benchmark_{Benchmark.__next_benchmark_number}"
             Benchmark.__next_benchmark_number += 1
         self.__runs = runs
+        if reporter is None:
+            self.__reporter = Reporter()
+        else:
+            self.__reporter = reporter
         self.__user_function: Optional[Callable] = None
         self.__user_function_args: Dict[str, Any]
         self.__run_times: List[int] = []
@@ -41,6 +61,7 @@ class Benchmark:
             return False
         self.__measure_clock_latency()
         self.__run_benchmark()
+        self.__make_report()
         return True
 
     def set_user_code(self, function, **kwargs):
@@ -53,10 +74,6 @@ class Benchmark:
         """
         self.__user_function = function
         self.__user_function_args = kwargs
-
-    @property
-    def results(self) -> BenchmarkResults:
-        return BenchmarkResults(self.__name, self.__run_times)
 
     def __measure_clock_latency(self):
         """
@@ -81,3 +98,6 @@ class Benchmark:
             self.__user_function(**self.__user_function_args)
             end_time = time.perf_counter_ns()
             self.__run_times[i] = max(end_time - start_time - self.__clock_latency, 0)
+
+    def __make_report(self):
+        self.__reporter.report(BenchmarkResults(self.__name, self.__run_times))
