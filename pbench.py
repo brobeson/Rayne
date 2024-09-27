@@ -16,9 +16,12 @@ class Reporter:
     def report(self, result: BenchmarkResults):
         print(
             result.name,
+            ": μ=",
             int(mean(result.run_times)),
+            "ns, σ=",
             int(stdev(result.run_times)),
-            sep="  ",
+            "ns",
+            sep=""
         )
 
 
@@ -30,19 +33,13 @@ class Benchmark:
         runs (int): Execute the test subject this many times. Each run is independently timed.
     """
 
-    __next_benchmark_number = 1
-
     def __init__(
         self,
         name: Optional[str] = None,
         runs: int = 1000,
         reporter: Optional[Reporter] = None,
     ):
-        if name:
-            self.__name = name
-        else:
-            self.__name = f"Benchmark_{Benchmark.__next_benchmark_number}"
-            Benchmark.__next_benchmark_number += 1
+        self.__name = name
         self.__runs = runs
         if reporter is None:
             self.__reporter = Reporter()
@@ -74,6 +71,8 @@ class Benchmark:
         """
         self.__user_function = function
         self.__user_function_args = kwargs
+        if not self.__name:
+            self.__name = function.__name__
 
     def __measure_clock_latency(self):
         """
