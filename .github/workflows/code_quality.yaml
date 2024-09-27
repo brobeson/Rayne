@@ -1,0 +1,9 @@
+name: Static Analysis
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+jobs:
+  dotFiles:
+    name: Dot File Quality
+    uses: brobeson/SupportFileQuality/.github/workflows/support_files.yaml@v1
