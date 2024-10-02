@@ -5,5 +5,8 @@ on:
   push:
 jobs:
   dotFiles:
-    name: Dot File Quality
+    name: Project Files
     uses: brobeson/SupportFileQuality/.github/workflows/support_files.yaml@v1
+  python:
+    name: Python
+    uses: brobeson/PythonWorkflow/.github/workflows/python.yaml@v1
