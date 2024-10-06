@@ -1,19 +1,29 @@
 """Provide micro benchmarking functionality"""
 
-from dataclasses import dataclass
 import time
+from dataclasses import dataclass
 from statistics import mean, stdev
-from typing import List, Callable, Optional, Dict, Any
+from typing import Any, Callable, Dict, List, Optional
 
 
 @dataclass
 class BenchmarkResults:
+    """Benchmark name and associated run times."""
+
     name: str
     run_times: List[int]
 
 
-class Reporter:
+class Reporter:  # pylint:disable=too-few-public-methods
+    """Interface for custom reporters."""
+
     def report(self, result: BenchmarkResults):
+        """
+        Report benchmark results.
+
+        Args:
+            result (BenchmarkResults): The run times for each run of the user code.
+        """
         print(
             result.name,
             ": μ=",
@@ -21,7 +31,7 @@ class Reporter:
             "ns, σ=",
             int(stdev(result.run_times)),
             "ns",
-            sep=""
+            sep="",
         )
 
 
