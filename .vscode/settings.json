@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "githubIssues.issueBranchTitle": "${issueNumber}-${sanitizedIssueTitle}",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "[json,markdownlint,yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

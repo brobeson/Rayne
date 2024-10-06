@@ -1,5 +1,18 @@
 {
   "version": "0.2",
-  "words": ["brobeson", "pbench"],
+  "words": [
+    "autodocstring",
+    "bierner",
+    "brobeson",
+    "davidanson",
+    "debugpy",
+    "esbenp",
+    "isort",
+    "njpwerner",
+    "pbench",
+    "pylance",
+    "pylint",
+    "tamasfe"
+  ],
   "ignorePaths": [".gitignore"]
 }
