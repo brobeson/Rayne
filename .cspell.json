@@ -1,5 +1,7 @@
 {
   "version": "0.2",
+  "dictionaries": ["python"],
+  "ignorePaths": [".gitignore"],
   "words": [
     "autodocstring",
     "bierner",
@@ -13,6 +15,5 @@
     "pylance",
     "pylint",
     "tamasfe"
-  ],
-  "ignorePaths": [".gitignore"]
+  ]
 }
