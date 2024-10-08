@@ -27,7 +27,8 @@ It is
 
 Rayne accurately measures your code's execution time by
 
-#. Warming up the cache
+.. #. Warming up the cache
+
 #. Measuring your code 1000 times
 #. Accounting for the time necessary to query your system's clock
 
