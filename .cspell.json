@@ -9,6 +9,7 @@
     "davidanson",
     "debugpy",
     "esbenp",
+    "furo",
     "isort",
     "njpwerner",
     "pbench",
