@@ -1,13 +1,13 @@
 Getting Started
 ===============
 
-First, import `pbench`
+First, import `Rayne`
 
 .. code-block:: python
   
-   from pbench import Benchmark
+   from rayne import Benchmark
 
-PBench uses a context manager to run a micro benchmark.
+Rayne uses a context manager to run a micro benchmark.
 In the context manager, set the benchmark ``subject`` to the function you want to benchmark.
 When the context manager exits, it runs the benchmarks.
 
@@ -19,7 +19,7 @@ When the context manager exits, it runs the benchmarks.
    with Benchmark() as benchmark:
        benchmark.set_user_code(fibonacci, n=5)
 
-By default, PBench runs the subject 1000 times.
+By default, Rayne runs the subject 1000 times.
 You can change this with the ``runs`` argument to ``Benchmark()``:
 
 .. code-block:: python

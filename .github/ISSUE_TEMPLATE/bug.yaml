@@ -7,7 +7,7 @@ body:
     id: version
     attributes:
       label: Version
-      description: What version of PBench are you using?
+      description: What version of Rayne are you using?
     validations:
       required: true
   - type: textarea

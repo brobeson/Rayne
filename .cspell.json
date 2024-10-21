@@ -12,9 +12,9 @@
     "furo",
     "isort",
     "njpwerner",
-    "pbench",
     "pylance",
     "pylint",
+    "rayne",
     "tamasfe"
   ]
 }

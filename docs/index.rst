@@ -1,7 +1,7 @@
 .. cspell:words toctree maxdepth
 
-PBench
-======
+Rayne
+=====
 
 .. toctree::
    :maxdepth: 2

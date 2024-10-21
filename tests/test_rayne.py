@@ -1,4 +1,4 @@
-"""Unit tests for the pbench module"""
+"""Unit tests for the Rayne module"""
 
 
 def test_one():
