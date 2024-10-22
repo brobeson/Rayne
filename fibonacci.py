@@ -1,7 +1,7 @@
-"""Example use of PBench"""
+"""Example use of Rayne"""
 
 from math import sqrt
-from pbench import Benchmark
+from rayne import Benchmark
 
 
 def closed_form(n: int) -> int:
