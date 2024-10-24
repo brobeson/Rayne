@@ -1,11 +1,29 @@
 .. cspell:words toctree maxdepth
 
-Rayne
-=====
+:hide-toc:
+
+.. include:: ../README.rst
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: User Guide
+   :hidden:
 
-   GettingStarted
+   getting_started
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Rayne Reference
+   :hidden:
+
+   benchmark
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Development
+   :hidden:
+
+   changelog
+   Repository <https://github.com/brobeson/Rayne>
+   Report an Issue <https://github.com/brobeson/Rayne/issues>
+   PyPI <https://pypi.org/project/rayne/>
