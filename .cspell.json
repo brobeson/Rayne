@@ -23,6 +23,7 @@
     "pylance",
     "pylint",
     "rayne",
-    "tamasfe"
+    "tamasfe",
+    "testpypi"
   ]
 }

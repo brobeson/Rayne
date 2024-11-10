@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true,
+  "editor.tabSize": 2,
   "githubIssues.issueBranchTitle": "${issueNumber}-${sanitizedIssueTitle}",
   "python.testing.pytestArgs": ["tests"],
   "python.testing.unittestEnabled": false,
