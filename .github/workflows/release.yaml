@@ -113,7 +113,7 @@ jobs:
           --target main
           --title "${{inputs.version}}"
           --notes-file notes.md
-          "v${version}"
+          "v${{inputs.version}}"
       - name: Close the milestone
         run: >
           gh api
