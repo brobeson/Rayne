@@ -2,6 +2,7 @@
 
 import time
 from dataclasses import dataclass
+from statistics import mean, stdev
 from typing import Any, Callable, Dict, List, Optional
 
 
@@ -11,6 +12,27 @@ class BenchmarkResults:
 
     name: str
     run_times: List[int]
+
+
+class Reporter:  # pylint:disable=too-few-public-methods
+    """Interface for custom reporters."""
+
+    def report(self, result: BenchmarkResults):
+        """
+        Report benchmark results.
+
+        Args:
+            result (BenchmarkResults): The run times for each run of the user code.
+        """
+        print(
+            result.name,
+            ": μ=",
+            int(mean(result.run_times)),
+            "ns, σ=",
+            int(stdev(result.run_times)),
+            "ns",
+            sep="",
+        )
 
 
 class Benchmark:
@@ -74,10 +96,19 @@ class Benchmark:
                        benchmark.subject = fibonacci
     """
 
-    def __init__(self, name: Optional[str] = None, runs: int = 1000):
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        runs: int = 1000,
+        reporter: Optional[Reporter] = None,
+    ):
         self.name = name
         self.runs = runs
-        self.__fut: Optional[Callable] = None  # fut -> function under test
+        if reporter is None:
+            self.__reporter = Reporter()
+        else:
+            self.__reporter = reporter
+        self.__fut: Optional[Callable] = None
         self.__fut_args: Dict[str, Any]
         self.__run_times: List[int] = []
         self.__clock_latency = 0
@@ -111,7 +142,7 @@ class Benchmark:
         self.__measure_clock_latency()
         self.__warm_up()
         self.__run_benchmark()
-        print(f"{self.name}: {self.run_time} ns")
+        self.__make_report()
         return True
 
     def __measure_clock_latency(self):
@@ -140,3 +171,6 @@ class Benchmark:
             self.__fut(**self.__fut_args)
             end_time = time.perf_counter_ns()
             self.__run_times[i] = max(end_time - start_time - self.__clock_latency, 0)
+
+    def __make_report(self):
+        self.__reporter.report(BenchmarkResults(self.name, self.__run_times))
