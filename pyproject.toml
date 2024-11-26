@@ -31,6 +31,9 @@ Repository = "https://github.com/brobeson/Rayne"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.coverage.run]
+omit = ["docs/conf.py"]
+
 [tool.isort]
 profile = "black"
 skip_gitignore = true
