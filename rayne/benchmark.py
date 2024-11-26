@@ -1,7 +1,16 @@
 """Provide micro benchmarking functionality"""
 
 import time
+from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional
+
+
+@dataclass
+class BenchmarkResults:
+    """Benchmark name and associated run times."""
+
+    name: str
+    run_times: List[int]
 
 
 class Benchmark:
