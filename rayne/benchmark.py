@@ -1,9 +1,31 @@
 """Provide micro benchmarking functionality"""
 
 import time
+from statistics import mean, stdev
 from typing import Any, Callable, Dict, List, Optional
 from .benchmark_results import BenchmarkResults
 from .reporters import mean_and_std_dev
+
+
+class Reporter:  # pylint:disable=too-few-public-methods
+    """Interface for custom reporters."""
+
+    def report(self, result: BenchmarkResults):
+        """
+        Report benchmark results.
+
+        Args:
+            result (BenchmarkResults): The run times for each run of the user code.
+        """
+        print(
+            result.name,
+            ": μ=",
+            int(mean(result.run_times)),
+            "ns, σ=",
+            int(stdev(result.run_times)),
+            "ns",
+            sep="",
+        )
 
 
 class Benchmark:
@@ -67,9 +89,18 @@ class Benchmark:
                        benchmark.subject = fibonacci
     """
 
-    def __init__(self, name: Optional[str] = None, runs: int = 1000):
+    def __init__(
+        self,
+        name: Optional[str] = None,
+        runs: int = 1000,
+        reporter: Optional[Reporter] = None,
+    ):
         self.name = name
         self.runs = runs
+        if reporter is None:
+            self.__reporter = Reporter()
+        else:
+            self.__reporter = reporter
         self.__fut: Optional[Callable] = None  # fut -> function under test
         self.__fut_args: Dict[str, Any]
         self.__run_times: List[int] = []
@@ -133,6 +164,4 @@ class Benchmark:
             self.__run_times[i] = max(end_time - start_time - self.__clock_latency, 0)
 
     def __write_report(self):
-        if not self.__run_times:
-            raise RuntimeError("No user code was measured.")
-        mean_and_std_dev(BenchmarkResults(self.name, self.__run_times))
+        self.__reporter.report(BenchmarkResults(self.name, self.__run_times))
