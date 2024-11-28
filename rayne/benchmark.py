@@ -109,6 +109,7 @@ class Benchmark:
         if self.__user_function is None:
             raise RuntimeError("No user code was specified to measure.")
         self.__measure_clock_latency()
+        self.__warm_up()
         self.__run_benchmark()
         print(f"{self.name}: {self.run_time} ns")
         return True
@@ -128,6 +129,9 @@ class Benchmark:
             end_time = time.perf_counter_ns()
             total_latency += end_time - start_time
         self.__clock_latency = total_latency // self.runs
+
+    def __warm_up(self):
+        self.__user_function(**self.__user_function_args)
 
     def __run_benchmark(self):
         self.__run_times = [0 for _ in range(0, self.runs)]
