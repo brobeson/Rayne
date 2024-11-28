@@ -77,8 +77,8 @@ class Benchmark:
     def __init__(self, name: Optional[str] = None, runs: int = 1000):
         self.name = name
         self.runs = runs
-        self.__user_function: Optional[Callable] = None
-        self.__user_function_args: Dict[str, Any]
+        self.__fut: Optional[Callable] = None  # fut -> function under test
+        self.__fut_args: Dict[str, Any]
         self.__run_times: List[int] = []
         self.__clock_latency = 0
 
@@ -90,8 +90,8 @@ class Benchmark:
             function (Callable): The benchmark measures the execution time of this function.
             kwargs: The benchmark passes these arguments to ``function``.
         """
-        self.__user_function = function
-        self.__user_function_args = kwargs
+        self.__fut = function
+        self.__fut_args = kwargs
         if not self.name:
             self.name = function.__name__
 
@@ -106,7 +106,7 @@ class Benchmark:
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        if self.__user_function is None:
+        if self.__fut is None:
             raise RuntimeError("No user code was specified to measure.")
         self.__measure_clock_latency()
         self.__warm_up()
@@ -131,12 +131,12 @@ class Benchmark:
         self.__clock_latency = total_latency // self.runs
 
     def __warm_up(self):
-        self.__user_function(**self.__user_function_args)
+        self.__fut(**self.__fut_args)
 
     def __run_benchmark(self):
         self.__run_times = [0 for _ in range(0, self.runs)]
         for i in range(0, self.runs):
             start_time = time.perf_counter_ns()
-            self.__user_function(**self.__user_function_args)
+            self.__fut(**self.__fut_args)
             end_time = time.perf_counter_ns()
             self.__run_times[i] = max(end_time - start_time - self.__clock_latency, 0)
