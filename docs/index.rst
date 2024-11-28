@@ -23,7 +23,7 @@
    :caption: Development
    :hidden:
 
-   changelog
+   release_notes
    Repository <https://github.com/brobeson/Rayne>
    Report an Issue <https://github.com/brobeson/Rayne/issues>
    PyPI <https://pypi.org/project/rayne/>

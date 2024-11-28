@@ -7,7 +7,7 @@ from pathlib import Path
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # pylint: disable=invalid-name
-# cspell: words furo
+# cspell: words extlinks furo
 # mypy: ignore-errors
 
 # -- Project information -----------------------------------------------------
@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path("..", "rayne").resolve()))
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.extlinks",
     "sphinx.ext.napoleon",
     "sphinx_copybutton",
     "sphinx_inline_tabs",
@@ -47,3 +48,4 @@ html_theme_options = {
 }
 
 copybutton_exclude = ".linenos, .gp, .go"
+extlinks = {"issue": ("https://github.com/brobeson/Rayne/issues/%s", "issue %s")}
