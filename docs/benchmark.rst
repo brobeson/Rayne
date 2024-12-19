@@ -1,5 +1,5 @@
-Benchmark class
-===============
+Benchmark
+=========
 
-.. automodule:: benchmark
+.. autoclass:: rayne.benchmark.Benchmark
    :members:

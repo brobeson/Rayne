@@ -1,24 +1,17 @@
 """Provide micro benchmarking functionality"""
 
 import time
-from dataclasses import dataclass
 from typing import Any, Callable, Dict, List, Optional
-
-
-@dataclass
-class BenchmarkResults:
-    """Benchmark name and associated run times."""
-
-    name: str
-    run_times: List[int]
+from .benchmark_results import BenchmarkResults
+from .reporters import mean_and_std_dev
 
 
 class Benchmark:
     """
     Create and run a microbenchmark.
 
-    Use this class as a context manager. Create the :py:class:`Benchmark` and set the test subject
-    with :py:meth:`set_user_code`. Rayne automatically measures and prints the test subject's
+    Use this class as a context manager. Create the :py:class:`Benchmark` and set the user code to
+    measure with :py:meth:`set_user_code`. Rayne automatically measures and reports the user code
     execution time when the context manager exits.
 
     .. code-block:: python
@@ -29,7 +22,7 @@ class Benchmark:
     Attributes:
         name: Rayne assigns a name to each :py:class:`Benchmark`. Rayne uses the name in the output
             to differentiate multiple benchmarks within a single benchmarking script. The default
-            name is the string representation of the test subject.
+            name is the string representation of the user code.
 
             >>> with Benchmark() as benchmark:
             >>>     benchmark.set_user_code(fibonacci, n=10)
@@ -53,10 +46,10 @@ class Benchmark:
                >>> print(benchmark.name)
                Recursive
 
-        runs: Rayne runs the test subject several times to build a statistical model of the
+        runs: Rayne runs the user code several times to build a statistical model of the
             execution time. The :py:attr:`runs` attribute controls how many times Rayne runs the
-            test subject. You can modify this value before the :py:class:`Benchmark` context
-            manager exits. For example, to run the test subject 2000 times:
+            user code. You can modify this value before the :py:class:`Benchmark` context
+            manager exits. For example, to run the user code 2000 times:
 
             .. tab:: Initialization
 
@@ -93,14 +86,12 @@ class Benchmark:
         self.__fut = function
         self.__fut_args = kwargs
         if not self.name:
-            self.name = function.__name__
-
-    @property
-    def run_time(self) -> float:
-        """The average execution time, in nanoseconds, of the subject function."""
-        if not self.__run_times:
-            raise RuntimeError("No user code was measured.")
-        return sum(self.__run_times) // self.runs
+            if hasattr(function, "__name__"):
+                self.name = function.__name__
+            elif hasattr(function, "__class__"):
+                self.name = function.__class__.__name__
+            else:
+                self.name = "Unknown Benchmark"
 
     def __enter__(self):
         return self
@@ -111,7 +102,7 @@ class Benchmark:
         self.__measure_clock_latency()
         self.__warm_up()
         self.__run_benchmark()
-        print(f"{self.name}: {self.run_time} ns")
+        self.__write_report()
         return True
 
     def __measure_clock_latency(self):
@@ -140,3 +131,8 @@ class Benchmark:
             self.__fut(**self.__fut_args)
             end_time = time.perf_counter_ns()
             self.__run_times[i] = max(end_time - start_time - self.__clock_latency, 0)
+
+    def __write_report(self):
+        if not self.__run_times:
+            raise RuntimeError("No user code was measured.")
+        mean_and_std_dev(BenchmarkResults(self.name, self.__run_times))
