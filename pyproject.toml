@@ -36,5 +36,10 @@ omit = ["docs/conf.py"]
 
 [tool.isort]
 profile = "black"
+only_sections = true
 skip_gitignore = true
 no_sections = true
+
+[[tool.mypy.overrides]]
+module = "pytest"
+ignore_missing_imports = true

@@ -1,7 +1,7 @@
 """Configuration file for the Sphinx documentation builder."""
 
+import os.path
 import sys
-from pathlib import Path
 
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
@@ -20,7 +20,7 @@ version = "0.0.0"
 release = "0.0.0"
 highlight_language = "python"
 
-sys.path.insert(0, str(Path("..", "rayne").resolve()))
+sys.path.insert(0, os.path.abspath("../"))
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -44,7 +44,7 @@ html_title = project
 html_theme_options = {
     "dark_css_variables": {"color-announcement-background": "#ff5252"},
     # pylint: disable=line-too-long
-    "announcement": 'This is alpha software. The interface is subject to breaking changes.<br/>You can see the pre-release road map at the <a href="https://github.com/users/brobeson/projects/6/views/1?filterQuery=milestone%3A%22Next+Release%22">kanban board</a>.',
+    "announcement": 'This is alpha software. The interface is subject to breaking changes. You can see the road map at the <a href="https://github.com/users/brobeson/projects/6/views/1?filterQuery=milestone%3A%22Next+Release%22">kanban board</a>.',
 }
 
 copybutton_exclude = ".linenos, .gp, .go"

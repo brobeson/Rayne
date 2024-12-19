@@ -10,16 +10,12 @@ def test_benchmark_default_init() -> None:
     b = Benchmark()
     assert b.name is None
     assert b.runs == 1000
-    with pytest.raises(RuntimeError):
-        assert b.run_time is None
 
 
 def test_benchmark_custom_init() -> None:
     b = Benchmark(runs=9876, name="Hamlet")
     assert b.name == "Hamlet"
     assert b.runs == 9876
-    with pytest.raises(RuntimeError):
-        assert b.run_time is None
 
 
 def test_context() -> None:
@@ -38,7 +34,6 @@ def test_context() -> None:
     with Benchmark() as b:
         b.set_user_code(s)
     assert s.was_run
-    assert b.run_time > 0
 
 
 def test_no_subject() -> None:

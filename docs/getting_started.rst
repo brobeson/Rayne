@@ -34,7 +34,7 @@ Write Your Benchmarks
 ---------------------
 
 Rayne is designed as a context manager.
-Instantiate a :py:class:`~benchmark.Benchmark` object, set the code to execute, and exit the context manager.
+Instantiate a :py:class:`~rayne.benchmark.Benchmark` object, set the code to execute, and exit the context manager.
 When the context manager exits, Rayne runs your code and measures the run time.
 
 .. literalinclude:: fibonacci.py
@@ -58,7 +58,7 @@ Rayne prints the average run time in nanoseconds.
 Next Steps
 ----------
 
-#. Read the :py:class:`~benchmark.Benchmark` reference documentation
+#. Read the :py:class:`~rayne.benchmark.Benchmark` reference documentation
 
 ----
 
