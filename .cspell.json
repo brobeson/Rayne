@@ -3,6 +3,7 @@
   "dictionaries": ["python"],
   "ignorePaths": [".gitignore", "__pycache__", ".git/"],
   "words": [
+    "autoclass",
     "autodocstring",
     "automodule",
     "bierner",

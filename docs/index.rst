@@ -17,6 +17,8 @@
    :hidden:
 
    benchmark
+   benchmark_results
+   reporters
 
 .. toctree::
    :maxdepth: 1

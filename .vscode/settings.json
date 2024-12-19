@@ -1,4 +1,6 @@
 {
+  "cSpell.checkOnlyEnabledFileTypes": false,
+  "cSpell.autoFormatConfigFile": true,
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "githubIssues.issueBranchTitle": "${issueNumber}-${sanitizedIssueTitle}",
